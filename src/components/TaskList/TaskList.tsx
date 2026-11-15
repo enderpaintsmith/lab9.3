@@ -2,6 +2,7 @@
 import { TaskItem } from "../TaskItem/TaskItem";
 import type { TaskListProps } from "../../types";
 
+// Destructures all three props from the props object and types them with TaskListProps.
 export function TaskList({
   tasks,
   onStatusChange,

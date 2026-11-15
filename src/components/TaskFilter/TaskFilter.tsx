@@ -3,8 +3,10 @@ import type { TaskFilterProps, TaskStatus } from "../../types";
 
 type TaskPriority = "low" | "medium" | "high";
 
-// Lets the user choose filters and reports them to the parent through onFilterChange.
-// It doesn't filter anything itself; App.tsx does the actual filtering.
+// Function component. "export" makes it a named export so App can import it with { TaskFilter }.
+// The parameter is the props object, destructured to pull out onFilterChange.
+// ": TaskFilterProps" types the whole props object (not just onFilterChange),
+// so TypeScript checks that the parent passes a function with the right shape.
 export function TaskFilter({ onFilterChange }: TaskFilterProps) {
   // Local state keeps each dropdown showing the current selection.
   // "" represents "All" (no filter selected).
