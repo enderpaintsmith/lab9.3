@@ -20,7 +20,7 @@ I organized the application into three reusable components: `TaskList`, `TaskIte
 
 **TaskItem** displays the information for an individual task, including its title, description, status, priority, and due date. It includes a dropdown for changing the task's status and a button for deleting the task. Conditional rendering is used to display additional messages for completed and high-priority tasks.
 
-**TaskFilter** provides dropdown menus for filtering tasks by status and priority. It manages the selected filter values and communicates changes to the parent component through a callback function.
+**TaskFilter** provides dropdown menus for filtering tasks by status and priority. Manages selected filter values and communicates changes to the parent component through a callback function.
 
 ## State Management and Filtering
 
