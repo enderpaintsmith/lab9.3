@@ -69,7 +69,8 @@ function App() {
   return (
     <main>
       <h1>Task Manager</h1>
-
+      {/* The attribute named (onFilterChange, onStatusChange, onDelete) becomes the 3 keys of the
+      props object the child receives. The values are the functions defined in App. */}
       <TaskFilter onFilterChange={setFilters} />
 
       <TaskList

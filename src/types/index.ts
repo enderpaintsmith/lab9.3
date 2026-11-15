@@ -26,8 +26,8 @@ export interface TaskItemProps {
   onDelete: (taskId: string) => void;
 }
 
-// Defines the callback required by TaskFilter.
-// The filter properties are optional so either filter can be used independently.
+// Describes the props object TaskFilter receives. The component's
+// parameter annotation (": TaskFilterProps") refers to this interface.
 export interface TaskFilterProps {
   onFilterChange: (filters: {
     status?: TaskStatus;

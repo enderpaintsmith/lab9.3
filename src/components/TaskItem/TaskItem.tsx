@@ -1,6 +1,8 @@
 
 import type { TaskItemProps, TaskStatus } from "../../types";
 
+// Same pattern: destructured props, typed by TaskItemProps.
+// "task" is one task object; the other two are callbacks provided by App.
 export function TaskItem({
   task,
   onStatusChange,
