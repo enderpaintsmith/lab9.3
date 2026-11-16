@@ -1,3 +1,4 @@
+/* Layout: centers the app and styles the main card. */
 
 #root {
   max-width: 950px;
@@ -24,7 +25,7 @@ h2 {
   margin: 0 0 20px;
 }
 
-/* Filters */
+/* Filters: styles the TaskFilter component. */
 
 .task-filter {
   background: #f2f5f0;
@@ -49,6 +50,7 @@ h2 {
   cursor: pointer;
 }
 
+/* Accessibility: shows a clear outline when a control is selected with the keyboard. */
 .task-filter select:focus-visible,
 .task-item select:focus-visible,
 .task-item button:focus-visible {
@@ -56,7 +58,7 @@ h2 {
   outline-offset: 2px;
 }
 
-/* Task list */
+/* Task list: styles the TaskList component. A grid with a gap spaces out the cards. */
 
 .task-list {
   display: grid;
@@ -67,7 +69,7 @@ h2 {
   margin-bottom: 4px;
 }
 
-/* Individual task cards */
+/* Task cards: styles each TaskItem. */
 
 .task-item {
   background: #ffffff;
@@ -78,6 +80,7 @@ h2 {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
+/* Lifts the card slightly when the mouse is over it. */
 .task-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(30, 60, 45, 0.1);
@@ -102,7 +105,7 @@ h2 {
   cursor: pointer;
 }
 
-/* Status indicators */
+/* Status indicators: the status class from TaskItem changes the left border color. */
 
 .task-item.pending {
   border-left-color: #c69a62;
@@ -117,7 +120,7 @@ h2 {
   background: #f7faf6;
 }
 
-/* Priority indicators */
+/* Priority indicators: the priority class from TaskItem changes the top border color. */
 
 .task-item.high {
   border-top: 2px solid #b86a57;
@@ -130,6 +133,8 @@ h2 {
 .task-item.low {
   border-top: 2px solid #738575;
 }
+
+/* Messages shown with conditional rendering in TaskItem. */
 
 .completed-message {
   color: #36704e;
@@ -161,7 +166,7 @@ h2 {
   transform: scale(0.97);
 }
 
-/* Responsive layout */
+/* Responsive layout: adjusts spacing and stacks the filters on small screens. */
 
 @media (max-width: 600px) {
   #root {
@@ -188,5 +193,14 @@ h2 {
 
   .task-item {
     padding: 18px;
+  }
+}
+
+/* Accessibility: turns off animations for people who have reduced motion turned on. */
+
+@media (prefers-reduced-motion: reduce) {
+  .task-item,
+  .task-item button {
+    transition: none;
   }
 }
