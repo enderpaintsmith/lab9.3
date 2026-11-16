@@ -1,64 +1,44 @@
-# Task Manager (Lab 9.3)
+Task Manager (Lab 9.3)
 
-This is a small React and TypeScript app that shows a list of tasks. You can filter the tasks, change their status, and delete them. The main goal of this lab was to practice showing lists in React using `.map()`, `key` props, filtering, and conditional rendering.
+A React and TypeScript task manager built with Vite. It shows a list of tasks that can be filtered by status and priority, updated with a status dropdown, and deleted. The lab focuses on rendering lists with .map(), unique key props, filtering, and conditional rendering.
 
-## What It Does
+How It Works
 
-- Shows a list of tasks with a title, description, status, priority, and due date
-- Filters tasks by status, priority, or both
-- Lets you change a task's status with a dropdown
-- Lets you delete a task
-- Shows "No tasks to display." when the list is empty
-- Shows a message when a task is completed and a warning when a task is high priority
+State lives in App. Data flows down through props, and user actions flow back up through callback functions. TaskFilter reports the selected filters to App, App passes the filtered tasks and its handler functions to TaskList, and TaskList passes them on to each TaskItem. TaskItem never changes a task directly. It calls a function that App provided, App updates its state, and React re-renders.
 
-## Project Structure
+Files
+main.tsx
 
-```text
-src/
-  App.tsx
-  main.tsx
-  types/
-    index.ts
-  components/
-    TaskFilter/
-      TaskFilter.tsx
-    TaskList/
-      TaskList.tsx
-    TaskItem/
-      TaskItem.tsx
-```
+The entry point. It finds the root element in index.html and renders <App /> inside StrictMode, which adds extra development checks. The ! after getElementById is a TypeScript non-null assertion that tells TypeScript the element exists.
 
-## Components
+types/index.ts
 
-- `App.tsx`: keeps the task list and the filters in state. It also has the functions that change status and delete tasks, and it creates the filtered list.
-- `TaskFilter.tsx`: has the two filter dropdowns and tells `App` which filters were picked.
-- `TaskList.tsx`: loops through the tasks and shows a `TaskItem` for each one.
-- `TaskItem.tsx`: shows one task, with the status dropdown and delete button.
-- `types/index.ts`: has the TypeScript types for tasks and props.
+Holds all the TypeScript types. TaskStatus is a union type that only allows pending, in-progress, or completed. The Task interface describes a task, and TaskListProps, TaskItemProps, and TaskFilterProps describe the props each component receives, including the callback function types. In TaskFilterProps the filter properties are optional, so either filter can be used on its own.
 
-## How It Works
+App.tsx
 
-The state lives in `App`. `App` passes data down to the other components with props. When the user does something, like deleting a task, the child component calls a function that `App` gave it. `App` updates its state and React re-renders the page.
+The main component, which owns the data and the functions that change it. useState stores the tasks and the filters, and React re-renders when either changes. handleStatusChange uses .map() to replace the matching task with a copy that has the new status and keeps every other task as is, so state is never changed directly. handleDelete uses .filter() to keep every task except the one with the matching ID. filteredTasks also uses .filter() to build a list that matches both selected filters without changing the original tasks. A filter that is not selected is undefined, so it does not exclude anything.
 
-For example, when I click Delete, `TaskItem` calls `onDelete(task.id)`. That is really `handleDelete` in `App`, which removes the task from state.
+components/TaskFilter/TaskFilter.tsx
 
-## What I Practiced
+Shows the status and priority dropdowns and reports the choices to App through onFilterChange. It destructures its props in the function signature, and the TaskFilterProps annotation types the whole props object. Each dropdown is a controlled component whose value comes from state, and an empty string means "All". Each handler sends both filters to App, because setFilters replaces the whole filter object and sending only one would erase the other. The expression newStatus || undefined turns an empty string into undefined, which App treats as no filter.
 
-- `useState` to store the tasks and filters
-- Props and callback functions to send data down and send actions back up
-- `.map()` in `TaskList` to turn each task into a `TaskItem`
-- `key` props using `task.id` so React can keep track of each item
-- `.filter()` to show only tasks that match the selected filters, and to remove a deleted task
-- Updating state without changing the original array, using `.map()` and the spread operator for a status change
-- Conditional rendering with a ternary for the empty list message and `&&` for the completed and high priority messages
-- Controlled dropdowns where the value comes from state or props
-- TypeScript types and interfaces for tasks, statuses, and props
+components/TaskList/TaskList.tsx
 
-## How to Run
+Receives the filtered tasks and decides what to show, with no state of its own. A ternary checks whether the list is empty and shows "No tasks to display." if so, which covers both an empty list and filters that match nothing. Otherwise .map() turns each task into a TaskItem. Each item gets key={task.id} so React can track items when the list changes. The ID is unique and does not change, unlike an array index, which shifts after a delete or filter. The two callbacks are passed straight through to each TaskItem.
 
-```bash
-npm install
-npm run dev
-```
+components/TaskItem/TaskItem.tsx
 
-Then open the link shown in the terminal.
+Shows one task and reports user actions back to App. The status dropdown is a controlled component whose value is task.status, and changing it calls onStatusChange with the task ID and the new status. The event is typed as React.ChangeEvent<HTMLSelectElement>, and as TaskStatus tells TypeScript the selected value is a valid status. The Delete button uses an arrow function so onDelete runs on click and not during render. Conditional rendering with && shows "Task completed!" only for completed tasks and "High priority task" only for high priority tasks. The card's class name is built from the status and priority so the CSS can style each one, and each label and dropdown pair gets a unique id based on the task ID.
+
+index.css
+
+Global styles: the base font, text and background colors, and box-sizing: border-box for predictable sizing. Buttons and dropdowns use the page font.
+
+App.css
+
+Layout and component styles. It centers the app and styles the filter box, the task list, and the task cards. The status classes change the card's left border color, and the priority classes change its top border color. Cards lift slightly on hover, and the delete button has hover and pressed states. Focus outlines show keyboard focus on the dropdowns and the button. A media query at 600px stacks the filter labels above full-width dropdowns on small screens, and a reduced-motion rule turns off animations for people who have that setting turned on.
+
+Running the Project
+
+Run npm install to install the dependencies and npm run dev to start the app, then open the link shown in the terminal. Run npm run build to check for TypeScript errors.
